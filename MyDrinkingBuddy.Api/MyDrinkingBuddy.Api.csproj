@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>5b7d6e55-a9ea-4511-9fdf-40c2360af622</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="NSwag.Commands" Version="13.16.1" />
+	<PackageReference Include="NSwag.MSBuild" Version="13.16.1">
+		<PrivateAssets>all</PrivateAssets>
+		<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	</PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyDrinkingBuddy.Business\MyDrinkingBuddy.Business.csproj" />
+  </ItemGroup>
+	<Target Name="NSwag" AfterTargets="PostBuildEvent" Condition=" '$(Configuration)' == 'Debug' ">
+		<Exec Command="$(NSwagExe_Net60) run SwaggerConfig.nswag /variables:Configuration=$(Configuration) /runtime:Net60" />
+	</Target>
+</Project>
