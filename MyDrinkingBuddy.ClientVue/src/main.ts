@@ -10,6 +10,5 @@ import "./assets/main.css";
 const app = createApp(App);
 
 app.use(createPinia());
-app.config.globalProperties.ApiUrl = "https://localhost:5001";
 app.use(router);
 app.mount("#app");

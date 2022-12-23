@@ -35,7 +35,7 @@ const deleteDrink = (async () => {
                     <h5 class="card-title">{{ drink?.drinkName }}</h5>
                     <div class="d-flex justify-content-between">
                         <div><strong>Alcohol:</strong> {{ drink?.alcoholPercentage }}%</div>
-                        <div>{{ drink?.createdOn?.format("DD/MM hh:mm") }}</div>
+                        <div>{{ drink?.createdOn?.format("DD/MM HH:mm") }}</div>
                     </div>
                     <div class="d-flex justify-content-between">
                         <div><strong>Volume:</strong> {{ drink?.size }}ml</div>

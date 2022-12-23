@@ -15,7 +15,7 @@ const goToSession = (async () => {
         <div class="row g-0">
             <div class="col-12">
                 <div class="card-body">
-                    <h5 class="card-title"> {{ session.createdOn?.format("DD/MM/YYYY hh:mm") }}</h5>
+                    <h5 class="card-title"> {{ session.createdOn?.format("DD/MM/YYYY HH:mm") }}</h5>
                     <div class="d-flex justify-content-between">
                         <div><strong>number of drinks:</strong> </div>
                         <div>{{ session.sessionDrinks?.length }}</div>
