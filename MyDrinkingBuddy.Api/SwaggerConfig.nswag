@@ -91,7 +91,7 @@
       "typeStyle": "Class",
       "classTypes": [],
       "extendedClasses": [],
-      "extensionCode": "../MyDrinkingBuddy.ClientVue001/src/resources/api-clients/mdb-api-client-extensions.ts",
+      "extensionCode": "../MyDrinkingBuddy.ClientVue/src/resources/api-clients/mdb-api-client-extensions.ts",
       "generateDefaultValues": true,
       "excludedTypeNames": [],
       "excludedParameterNames": [],
@@ -110,7 +110,7 @@
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "../MyDrinkingBuddy.ClientVue001/src/resources/api-clients/mdb-api-client.ts"
+      "output": "../MyDrinkingBuddy.ClientVue/src/resources/api-clients/mdb-api-client.ts"
     }
   }
 }
