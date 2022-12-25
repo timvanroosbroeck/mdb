@@ -60,7 +60,7 @@
       "moduleName": "",
       "namespace": "",
       "typeScriptVersion": 4.7,
-      "template": "fetch",
+      "template": "axios",
       "promiseType": "Promise",
       "httpClass": "Http",
       "withCredentials": false,

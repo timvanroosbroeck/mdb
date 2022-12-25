@@ -1,5 +1,11 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Identity.Web;
 using MyDrinkingBuddy.Business.Extensions;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,8 +23,31 @@ builder.Services.AddCors(options =>
         .WithExposedHeaders("Content-Disposition");
     });
 });
-// Add services to the container.
 
+// Adds Microsoft Identity platform (Azure AD B2C) support to protect this Api
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddMicrosoftIdentityWebApi(options =>
+{
+    builder.Configuration.Bind("AzureAdB2C", options);
+
+    options.TokenValidationParameters.NameClaimType = "name";
+},
+options => { builder.Configuration.Bind("AzureAdB2C", options); });
+
+builder.Services.AddMvc(opts =>
+{
+    var policy = new AuthorizationPolicyBuilder()
+         .RequireAuthenticatedUser()
+         .Build();
+    opts.Filters.Add(new AuthorizeFilter(policy));
+    //opts.CacheProfiles.Add("StandardList", new Microsoft.AspNetCore.Mvc.CacheProfile
+    //{
+    //    Duration = 28800, //8u
+    //    VaryByHeader = "Content-Language,Clear-cache"
+    //});
+});
+
+// Add services to the container.
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -37,6 +66,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

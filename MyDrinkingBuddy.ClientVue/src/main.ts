@@ -8,10 +8,11 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import "./assets/main.css";
 import { msalPlugin } from "./plugins/msalPlugin";
 import { msalInstance } from "./resources/authentication/authConfig";
-
+import { useIsAuthenticated } from "./resources/authentication/useIsAuthenticated";
 const app = createApp(App);
 
 app.use(createPinia());
 app.use(msalPlugin, msalInstance);
 app.use(router);
+
 app.mount("#app");
