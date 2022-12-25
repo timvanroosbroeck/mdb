@@ -49,7 +49,7 @@ export const msalInstance = new PublicClientApplication(msalConfig);
 
 // Add here scopes for id token to be used at MS Identity Platform endpoints.
 export const loginRequest = {
-  scopes: ["https://authorityuri/user.read"],
+  scopes: ["openid", "email", import.meta.env.VITE_AZURE_AD_SCOPE],
 };
 
 // Add here the endpoints for MS Graph API services you would like to use.
