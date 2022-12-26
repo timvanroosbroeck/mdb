@@ -1,13 +1,21 @@
 <script setup lang="ts">
 import type { SessionDto } from '@/resources/api-clients/mdb-api-client';
 import router from '@/router';
+import { useSessionStore } from '@/stores/session';
 
 const props = defineProps<{
     session: SessionDto
 }>()
+
+const sessionStore = useSessionStore();
+
 const goToSession = (async () => {
     await router.push(`/session/${props.session.sessionId}`);
     // await router.push({ name: `session/`, query: { sessionId: props.session } });
+})
+
+const deleteSession = (async () => {
+    await sessionStore.deleteSession(props?.session?.sessionId ?? 0)
 })
 </script>
 <template>
@@ -28,9 +36,13 @@ const goToSession = (async () => {
                         <div><strong>Current promile:</strong></div>
                         <div>{{ session.promile?.toFixed(2) }}</div>
                     </div>
-                    <div class="d-flex justify-content-end mt-2" v-if="session.open">
-                        <button class="btn btn-primary my-2" @click="goToSession">Continue</button>
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-primary my-2" v-if="session.open" @click="goToSession">Continue</button>
+                        <button class="btn btn-primary my-2 mx-2" v-if="(session?.sessionDrinks?.length ?? 0) === 0"
+                            @click="deleteSession">Delete</button>
                     </div>
+
+
 
                 </div>
             </div>

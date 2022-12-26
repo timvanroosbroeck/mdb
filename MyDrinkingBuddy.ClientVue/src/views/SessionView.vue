@@ -6,11 +6,17 @@ import { useSessionStore } from '@/stores/session'
 import { computed, onMounted } from 'vue';
 import { SessionDrinkDto } from '@/resources/api-clients/mdb-api-client';
 import { useRoute } from "vue-router";
+import { useUserStore } from '@/stores/user';
 
 const store = useDrinksStore();
 const route = useRoute();
 const getDrinks = computed(() => {
   return store.getDrinks;
+});
+
+const userStore = useUserStore();
+const getUser = computed(() => {
+  return userStore.getUser;
 });
 
 const sessionStore = useSessionStore();
@@ -23,8 +29,9 @@ const getSession = computed(() => {
 onMounted(async () => {
   // store.fetchUsers();
   await store.fetchDrinks();
-  console.log(route?.params);
-  await sessionStore.fetchSession(route?.params?.id as any);
+  if (route?.params?.id != null) {
+    await sessionStore.fetchSession(route?.params?.id as any);
+  }
 });
 
 // await store.fetchDrinks();
@@ -36,7 +43,7 @@ onMounted(async () => {
       <div class="row g-0">
         <div class="col-12">
           <div class="card-body">
-            <h5>Tim Van Roosbroeck</h5>
+            <h5>{{ getUser.firstName }} {{ getUser.lastName }}</h5>
             <!-- <h5 class="card-title">{{ getSession?. }}</h5> -->
             <div class="d-flex justify-content-between">
               <div><strong>Promile:</strong> {{ getSession?.promile?.toFixed(2) }}%</div>

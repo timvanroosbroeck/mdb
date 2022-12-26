@@ -58,6 +58,7 @@ export interface RingOption {
   badge?: number | string;
   selected?: boolean;
   deselect?: boolean;
+  disabled?: boolean;
   path?: Path | string;
 }
 export interface RingProps {

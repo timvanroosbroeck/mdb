@@ -12,6 +12,7 @@ namespace MyDrinkingBuddy.Business.Services
 {
     public interface ISessionService
     {
+        Task DeleteSession(int sessionId);
         Task AddSessionDrink(SessionDrinkDto sessionDrinkDto);
         Task DeleteSessionDrink(SessionDrinkDto sessionDrinkDto);
         Task<SessionDto> GetSession(int sessionId);
@@ -50,7 +51,14 @@ namespace MyDrinkingBuddy.Business.Services
             await _ctx.SaveChangesAsync();
             return session.SessionId;
         }
+        public async Task DeleteSession(int sessionId)
+        {
+            int userId = _userAuthorizationInfoService.UserId;
+            var session = await _ctx.Session.Include(x => x.SessionDrink).ThenInclude(x => x.Drink).Where(x => x.UserId == userId).FirstOrDefaultAsync(x => x.SessionId == sessionId);
 
+            _ctx.Session.Remove(session);
+            await _ctx.SaveChangesAsync();
+        }
         public async Task<SessionDto> GetSession(int sessionId)
         {
             int userId = _userAuthorizationInfoService.UserId;
