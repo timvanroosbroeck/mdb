@@ -38,6 +38,7 @@ const deleteSession = (async () => {
                     </div>
                     <div class="d-flex justify-content-end">
                         <button class="btn btn-primary my-2" v-if="session.open" @click="goToSession">Continue</button>
+                        <button class="btn btn-primary my-2" v-else @click="goToSession">View</button>
                         <button class="btn btn-primary my-2 mx-2" v-if="(session?.sessionDrinks?.length ?? 0) === 0"
                             @click="deleteSession">Delete</button>
                     </div>

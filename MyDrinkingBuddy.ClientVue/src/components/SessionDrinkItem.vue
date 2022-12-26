@@ -3,7 +3,8 @@ import { DrinkDto, SessionDrinkDto } from '@/resources/api-clients/mdb-api-clien
 import { useSessionStore } from '@/stores/session';
 
 const props = defineProps<{
-    drink: SessionDrinkDto
+    drink: SessionDrinkDto,
+    sessionOpen: boolean
 }>()
 const sessionStore = useSessionStore();
 const duplicate = (async () => {
@@ -42,7 +43,7 @@ const deleteDrink = (async () => {
                         <div>{{ drink?.timeRemaining }}</div>
                     </div>
 
-                    <div class="d-flex justify-content-end mt-2">
+                    <div class="d-flex justify-content-end mt-2" v-if="sessionOpen">
                         <button class="btn btn-primary my-2" @click="duplicate">Dupplicate</button>
                         <button class="btn btn-primary m-2 " @click="deleteDrink">Delete</button>
                     </div>

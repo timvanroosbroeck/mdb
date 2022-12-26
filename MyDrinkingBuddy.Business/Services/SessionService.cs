@@ -64,7 +64,12 @@ namespace MyDrinkingBuddy.Business.Services
             int userId = _userAuthorizationInfoService.UserId;
             var session = await _ctx.Session.Include(x => x.SessionDrink).ThenInclude(x => x.Drink).Where(x => x.UserId == userId).FirstOrDefaultAsync(x => x.SessionId == sessionId);
 
-            return CalculateSession(session);
+            var dto = CalculateSession(session);
+            if (!dto.Open && dto.CreatedOn > DateTime.Now.AddHours(-1))
+            {
+                dto.Open = true;
+            }
+            return dto;
         }
 
         public async Task<IEnumerable<SessionDto>> GetSessions()

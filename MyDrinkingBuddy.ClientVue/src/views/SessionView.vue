@@ -21,6 +21,7 @@ const getUser = computed(() => {
 
 const sessionStore = useSessionStore();
 const getSession = computed(() => {
+  console.log(sessionStore.getSession)
   return sessionStore.getSession;
 });
 // const drinks = computed(() => {
@@ -64,13 +65,15 @@ onMounted(async () => {
       </div>
     </div>
     <div class="d-grid mb-2">
-      <button class="btn btn-primary" data-bs-target="#myModal" data-bs-toggle="modal" type="button">Nieuwe
+      <button class="btn btn-primary" v-if="getSession.open" data-bs-target="#myModal" data-bs-toggle="modal"
+        type="button">Nieuwe
         consumptie</button>
     </div>
   </div>
   <div id="content">
+
     <div v-for="drink in getSession.sessionDrinks" :key="drink.sessionDrinkId">
-      <SessionDrinkItem :drink="drink"></SessionDrinkItem>
+      <SessionDrinkItem :drink="drink" :session-open="getSession.open ?? false"></SessionDrinkItem>
     </div>
   </div>
   <div class="py-2">
