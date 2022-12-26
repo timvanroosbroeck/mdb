@@ -18,7 +18,6 @@ export const useDrinksStore = defineStore("drinks", {
         const data = await client.getAll();
         this.drinks = data as any;
       } catch (error) {
-        alert(error);
         console.log(error);
       }
     },

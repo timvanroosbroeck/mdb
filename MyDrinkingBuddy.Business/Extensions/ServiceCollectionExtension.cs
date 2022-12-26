@@ -29,6 +29,7 @@ namespace MyDrinkingBuddy.Business.Extensions
             services.AddTransient<IUserAuthorizationInfoService, UserAuthorizationInfoService>();
             services.AddTransient<IDrinkService, DrinkService>();
             services.AddTransient<ISessionService, SessionService>();
+            services.AddTransient<IUserService, UserService>();
             return services;
 
         }

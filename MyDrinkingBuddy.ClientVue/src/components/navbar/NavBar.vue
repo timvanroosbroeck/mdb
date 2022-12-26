@@ -1,6 +1,7 @@
 <template>
-  <div class="rg-btn-container-foreground" :style="cssVariables">
-    <div v-for="(button, index) in localOptions" :key="`ring-btn-${index}`" class="rg-btn-container"
+  <div class="rg-btn-container-foreground " :style="cssVariables">
+    <div v-for="(button, index) in localOptions" :key="`ring-btn-${index}`"
+      :class="[button.disabled != null ? 'disabled' : '', 'rg-btn-container']"
       @click="handleButtonClick(button, index)">
       <div class="rg-btn-item">
         <div :class="[
@@ -30,10 +31,14 @@
 </template>
 
 <script setup lang="ts">
+import { useSessionStore } from '@/stores/session';
 import { ref, computed, watch, nextTick } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import type { RingOption } from './types';
-
+const sessionStore = useSessionStore();
+const getSession = computed(() => {
+  return sessionStore.getSession;
+});
 type RingProps = {
   modelValue: number | string | null;
   options: RingOption[];

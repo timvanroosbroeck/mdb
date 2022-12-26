@@ -33,6 +33,12 @@ namespace MyDrinkingBuddy.Api.Controllers
             var sessionId = await _sessionService.NewSession();
             return Ok(sessionId);
         }
+        [HttpDelete("[action]")]
+        public async Task<ActionResult> DeleteSession(int sessionId)
+        {
+            await _sessionService.DeleteSession(sessionId);
+            return Ok();
+        }
         [HttpPost("[action]")]
         public async Task<ActionResult> SaveDrink(SessionDrinkDto sessionDrinkDto)
         {

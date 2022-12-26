@@ -17,6 +17,7 @@ namespace MyDrinkingBuddy.Business.Mapper
             CreateMap<Session, SessionDto>().ReverseMap();
             CreateMap<SessionDrink, SessionDrinkDto>().ForMember(dest => dest.DrinkName, opt => opt.MapFrom(src => src.Drink.Name));
             CreateMap<SessionDrinkDto, SessionDrink>();
+            CreateMap<UserDto, User>().ReverseMap();
         }
     }
 }

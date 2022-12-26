@@ -29,7 +29,6 @@ export const useSessionStore = defineStore("session", {
         const data = await client.get(sessionId);
         this.session = data as any;
       } catch (error) {
-        alert(error);
         console.log(error);
       }
     },
@@ -39,7 +38,6 @@ export const useSessionStore = defineStore("session", {
         const data = await client.getAll();
         this.sessions = data;
       } catch (error) {
-        alert(error);
         console.log(error);
       }
     },
@@ -49,9 +47,13 @@ export const useSessionStore = defineStore("session", {
         await client.saveDrink(drink);
         await this.fetchSession(drink.sessionId as number);
       } catch (error) {
-        alert(error);
         console.log(error);
       }
+    },
+    async deleteSession(sessionId: number) {
+      const client = new SessionClient();
+      await client.deleteSession(sessionId);
+      await this.fetchSessions();
     },
     async deleteDrink(drink: SessionDrinkDto) {
       const client = new SessionClient();
@@ -64,7 +66,6 @@ export const useSessionStore = defineStore("session", {
         const sId = await client.newSession();
         return sId;
       } catch (error) {
-        alert(error);
         console.log(error);
       }
       return 0;
