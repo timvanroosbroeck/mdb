@@ -25,6 +25,8 @@ namespace MyDrinkingBuddy.Business.Extensions
 
             services.AddDbContext<MDBContext>(options => options.UseSqlServer(connectionString));
 
+            services.AddTransient<IClaimService, ClaimService>();
+            services.AddTransient<IUserAuthorizationInfoService, UserAuthorizationInfoService>();
             services.AddTransient<IDrinkService, DrinkService>();
             services.AddTransient<ISessionService, SessionService>();
             return services;

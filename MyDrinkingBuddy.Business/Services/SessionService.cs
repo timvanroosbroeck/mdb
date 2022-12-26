@@ -25,23 +25,25 @@ namespace MyDrinkingBuddy.Business.Services
 
         private readonly IMapper _mapper;
         private readonly MDBContext _ctx;
+        private readonly IUserAuthorizationInfoService _userAuthorizationInfoService;
 
-        public SessionService(IMapper mapper, MDBContext ctx)
+        public SessionService(IMapper mapper, MDBContext ctx, IUserAuthorizationInfoService userAuthorizationInfoService)
         {
             _mapper = mapper;
             _ctx = ctx;
+            _userAuthorizationInfoService = userAuthorizationInfoService;
         }
         public async Task<int> NewSession()
         {
-            int userId = 1;
+            int userId = _userAuthorizationInfoService.UserId;
             var user = await _ctx.User.FirstOrDefaultAsync(x => x.UserId == userId);
 
             var session = new Session()
             {
-                CreatedBy = "TVRS",
+                CreatedBy = _userAuthorizationInfoService.Identity,
                 CreatedOn = DateTime.Now,
                 UserId = userId,
-                Sex= user.Sex,
+                Sex = user.Sex,
                 Weight = user.Weight
             };
             _ctx.Session.Add(session);
@@ -51,7 +53,7 @@ namespace MyDrinkingBuddy.Business.Services
 
         public async Task<SessionDto> GetSession(int sessionId)
         {
-            int userId = 1;
+            int userId = _userAuthorizationInfoService.UserId;
             var session = await _ctx.Session.Include(x => x.SessionDrink).ThenInclude(x => x.Drink).Where(x => x.UserId == userId).FirstOrDefaultAsync(x => x.SessionId == sessionId);
 
             return CalculateSession(session);
@@ -59,23 +61,25 @@ namespace MyDrinkingBuddy.Business.Services
 
         public async Task<IEnumerable<SessionDto>> GetSessions()
         {
-            int userId = 1;
+            int userId = _userAuthorizationInfoService.UserId;
             var sessions = await _ctx.Session.Include(x => x.SessionDrink).ThenInclude(x => x.Drink).Where(x => x.UserId == userId).OrderByDescending(x => x.CreatedOn).Take(10).ToListAsync();
 
-            var result = sessions.Select(x => CalculateSession(x)).OrderBy(x=>x.Open).OrderByDescending(x=>x.CreatedOn).ToList();
+            var result = sessions.Select(x => CalculateSession(x)).OrderBy(x => x.Open).OrderByDescending(x => x.CreatedOn).ToList();
 
-            if(result.Count()>0 && !result[0].Open && result[0].CreatedOn > DateTime.Now.AddHours(-1))
+            if (result.Count() > 0 && !result[0].Open && result[0].CreatedOn > DateTime.Now.AddHours(-1))
             {
                 result[0].Open = true;
             }
-           
+
             return result;
         }
 
         public async Task AddSessionDrink(SessionDrinkDto sessionDrinkDto)
         {
+            if (!await _userAuthorizationInfoService.HasAccessToSession(sessionDrinkDto)) throw new UnauthorizedAccessException();
+
             var sessionDrink = _mapper.Map<SessionDrink>(sessionDrinkDto);
-            sessionDrink.CreatedBy = "TVRS";
+            sessionDrink.CreatedBy = _userAuthorizationInfoService.Identity;
             sessionDrink.CreatedOn = DateTime.Now;
 
             _ctx.SessionDrink.Add(sessionDrink);
@@ -83,12 +87,16 @@ namespace MyDrinkingBuddy.Business.Services
         }
         public async Task UpdateSessionDrink(SessionDrinkDto sessionDrinkDto)
         {
+            if (!await _userAuthorizationInfoService.HasAccessToSession(sessionDrinkDto)) throw new UnauthorizedAccessException();
+
             var sessionDrink = _mapper.Map<SessionDrink>(sessionDrinkDto);
             _ctx.SessionDrink.Update(sessionDrink);
             await _ctx.SaveChangesAsync();
         }
         public async Task DeleteSessionDrink(SessionDrinkDto sessionDrinkDto)
         {
+            if (!await _userAuthorizationInfoService.HasAccessToSession(sessionDrinkDto)) throw new UnauthorizedAccessException();
+
             var sessionDrink = _mapper.Map<SessionDrink>(sessionDrinkDto);
             _ctx.SessionDrink.Remove(sessionDrink);
             await _ctx.SaveChangesAsync();
@@ -126,7 +134,7 @@ namespace MyDrinkingBuddy.Business.Services
                 }
             }
             sessionDto.Promile = alcholRemaining / (session.Weight * sexFactor);
-            if(sessionDto.Promile > 0)
+            if (sessionDto.Promile > 0)
             {
                 sessionDto.Open = true;
             }

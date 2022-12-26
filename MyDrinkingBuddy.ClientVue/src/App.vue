@@ -21,17 +21,22 @@ const options = [
   // { id: 4, icon: 'fas fa-bell', title: 'Notification' },
   // { id: 5, icon: 'fa-solid fa-gear', title: 'Setting' }
 ];
+
 const stopWatcher = vue.watch(inProgress, async () => {
   const token = await acquireToken(instance);
-  console.log(token);
   if (token != null) {
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
     tokenAcquired.value = true;
   }
 });
 onMounted(async () => {
-
-
+  if (!tokenAcquired.value) {
+    const token = await acquireToken(instance);
+    if (token != null) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+      tokenAcquired.value = true;
+    }
+  }
 })
 </script>
 
