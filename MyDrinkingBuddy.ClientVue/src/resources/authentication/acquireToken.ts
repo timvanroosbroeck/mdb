@@ -4,7 +4,7 @@ export async function acquireToken(msalInstance: PublicClientApplication) {
   console.log(msalInstance.getAllAccounts());
   const request = {
     account: msalInstance.getAllAccounts()[0],
-    scopes: ["openid", "email", import.meta.env.VITE_AZURE_AD_SCOPE],
+    scopes: ["openid", "email", "profile", import.meta.env.VITE_AZURE_AD_SCOPE],
   };
   try {
     const response = await msalInstance.acquireTokenSilent(request);

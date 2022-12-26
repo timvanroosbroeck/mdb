@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Web;
+using MyDrinkingBuddy.Api.Middleware;
 using MyDrinkingBuddy.Business.Extensions;
 using System.Text.Json.Serialization;
 
@@ -54,6 +56,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.UseServices(builder.Configuration.GetConnectionString("MDB"));
+builder.Services.AddScoped<IClaimsTransformation, SecurityClaimsTransformation>();
 
 var app = builder.Build();
 
