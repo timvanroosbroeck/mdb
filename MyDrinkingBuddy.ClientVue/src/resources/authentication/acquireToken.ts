@@ -1,11 +1,22 @@
-import type { PublicClientApplication } from "@azure/msal-browser";
+import type {
+  PublicClientApplication,
+  SilentRequest,
+} from "@azure/msal-browser";
 
 export async function acquireToken(msalInstance: PublicClientApplication) {
-  console.log(msalInstance.getAllAccounts());
-  const request = {
+  if (
+    msalInstance.getAllAccounts()[0]?.idTokenClaims?.tfp == undefined ||
+    msalInstance.getAllAccounts()[0]?.idTokenClaims?.tfp == null
+  )
+    return null;
+
+  const request: SilentRequest = {
     account: msalInstance.getAllAccounts()[0],
+    authority: (import.meta.env.VITE_AZURE_AD_AUTHORITY_PREFIX +
+      msalInstance.getAllAccounts()[0]?.idTokenClaims?.tfp) as string,
     scopes: ["openid", "email", "profile", import.meta.env.VITE_AZURE_AD_SCOPE],
   };
+
   try {
     const response = await msalInstance.acquireTokenSilent(request);
     return response.accessToken;

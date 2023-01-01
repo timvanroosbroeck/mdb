@@ -20,6 +20,8 @@ const { instance } = useMsal();
 // }
 
 const login = () => {
+    (<any>loginRequest).authority = import.meta.env.VITE_AZURE_AD_AUTHORITY_GOOGLE
+    console.log(loginRequest);
     instance.loginRedirect(loginRequest);
 }
 </script>

@@ -1,8 +1,12 @@
 <script setup  lang="ts">
 import { useUserStore } from '@/stores/user'
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 const userStore = useUserStore();
+const options = ref([
+    { text: 'Male', value: true },
+    { text: 'Female', value: false }
+])
 const getUser = computed(() => {
     return userStore.getUser;
 });
@@ -30,8 +34,7 @@ const updateUser = (async () => {
                         <div class="input-group input-group-sm mb-3">
                             <label class="input-group-text" for="inputGroupSelect01">Sex</label>
                             <select class="form-select" id="inputGroupSelect01" v-model="getUser.sex">
-                                <option value="false">Female</option>
-                                <option value="true">Male</option>
+                                <option v-for="option in options" :value="option.value">{{ option.text }}</option>
                             </select>
                         </div>
                         <div class="d-grid mb-2">

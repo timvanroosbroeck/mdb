@@ -47,7 +47,7 @@ onMounted(async () => {
             <h5>{{ getUser.firstName }} {{ getUser.lastName }}</h5>
             <!-- <h5 class="card-title">{{ getSession?. }}</h5> -->
             <div class="d-flex justify-content-between">
-              <div><strong>Promile:</strong> {{ getSession?.promile?.toFixed(2) }}%</div>
+              <div><strong>promille:</strong> {{ getSession?.promile?.toFixed(2) }}%</div>
               <div><strong>{{ getSession?.weight?.toFixed(0) }}Kg</strong> </div>
               <!-- <div>{{ drink?.createdOn?.format("DD/MM hh:mm") }}</div> -->
             </div>

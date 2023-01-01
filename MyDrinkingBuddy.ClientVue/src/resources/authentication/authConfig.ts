@@ -4,7 +4,7 @@ import { LogLevel, PublicClientApplication } from "@azure/msal-browser";
 export const msalConfig = {
   auth: {
     clientId: import.meta.env.VITE_AZURE_AD_CLIENTID,
-    authority: import.meta.env.VITE_AZURE_AD_AUTHORITY,
+    // authority: import.meta.env.VITE_AZURE_AD_AUTHORITY_GOOGLE,
     knownAuthorities: ["mdbprod.b2clogin.com"],
     redirectUri: import.meta.env.VITE_AZURE_AD_REDIRECT_URI, // Must be registered as a SPA redirectURI on your app registration
     postLogoutRedirectUri: import.meta.env

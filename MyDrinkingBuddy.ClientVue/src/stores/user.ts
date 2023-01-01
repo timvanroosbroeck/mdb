@@ -19,8 +19,9 @@ export const useUserStore = defineStore("user", {
 
     async updateUser() {
       const client = new UserClient();
-      this.user.sex = (this.user.sex as any) == "true" ? true : false;
+
       await client.update(this.user);
+      await this.fetchUser();
     },
   },
 });

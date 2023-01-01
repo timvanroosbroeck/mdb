@@ -29,11 +29,11 @@ const deleteSession = (async () => {
                         <div>{{ session.sessionDrinks?.length }}</div>
                     </div>
                     <div class="d-flex justify-content-between">
-                        <div><strong>Max promile:</strong></div>
+                        <div><strong>Max promille:</strong></div>
                         <div>x</div>
                     </div>
                     <div class="d-flex justify-content-between" v-if="session.open">
-                        <div><strong>Current promile:</strong></div>
+                        <div><strong>Current promille:</strong></div>
                         <div>{{ session.promile?.toFixed(2) }}</div>
                     </div>
                     <div class="d-flex justify-content-end">

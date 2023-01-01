@@ -3,7 +3,8 @@ import * as vue from "vue";
 import { RouterLink, RouterView } from 'vue-router'
 import NavBar from './components/navbar/NavBar.vue'
 import { useIsAuthenticated } from './resources/authentication/useIsAuthenticated';
-import SignInButton from "./components/SignInButton.vue";
+import SignInButtonGoogle from "./components/SignInButtonGoogle.vue";
+import SignInButtonMS from "./components/SignInButtonMS.vue";
 import { onActivated, onBeforeMount, onMounted, ref } from 'vue';
 import axios from 'axios';
 import { acquireToken } from './resources/authentication/acquireToken';
@@ -52,12 +53,13 @@ onMounted(async () => {
       <nav-bar :options="options" v-model="selected" />
     </div>
   </div>
-  <div class="d-flex justify-content-center h-100 app-container" v-if="!isAuthenticated">
+  <div class="d-flex justify-content-center h-100 app-container" v-if="(!isAuthenticated || !tokenAcquired)">
     <div class="align-self-center">
       <div class="center-text my-2">
         <h5>My drinking buddy</h5>
       </div>
-      <SignInButton />
+      <SignInButtonGoogle />
+      <SignInButtonMS />
       <div class="center-text my-2"><small>Drink responsibly</small></div>
     </div>
   </div>
